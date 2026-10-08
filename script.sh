@@ -1,18 +1,25 @@
 #!/bin/bash
 
-# Check that a username was supplied
+# Check if username is provided
 if [ -z "$1" ]; then
-    echo "Usage: $0 <username>"
+    echo "Error: Please provide a username."
     exit 1
 fi
 
-USERNAME="$1"
+# Store the username
+username="$1"
 
-# Configure password-aging settings
-chage -d 2025-01-01 "$USERNAME" || exit 1
-chage -E 2026-12-31 "$USERNAME" || exit 1
-chage -m 7 "$USERNAME" || exit 1
-chage -M 90 "$USERNAME" || exit 1
+# Set last password change date
+chage -d 2025-01-01 "$username"
 
-# Display the configured settings
-chage -l "$USERNAME"
+# Set account expiration date
+chage -E 2026-12-31 "$username"
+
+# Set minimum password age to 7 days
+chage -m 7 "$username"
+
+# Set maximum password age to 90 days
+chage -M 90 "$username"
+
+# Display success message
+echo "Password expiry settings updated for $username."
